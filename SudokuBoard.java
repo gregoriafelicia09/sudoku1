@@ -89,7 +89,23 @@ public class SudokuBoard {
       return checkData() && checkRows() && checkColumns() && checkMiniSquare();
    }
    
-   f
+   public boolean isSolved(){
+      Map<String, Integer> map = new HashMap<String, Integer>();
+      for(int r = 0; r < board.length; r++){
+          for(int c = 0; c < board[0].length; c++) {
+             if(!map.containsKey(board[r][c]))
+                map.put(board[r][c], 1);
+              else
+                map.put(board[r][c], map.get(board[r][c])+ 1);    
+             }
+                 
+          }
+          for( String s : map.keySet()) {
+                if(map.get(s)!= 9)
+                   return false;
+       }
+       return isValid();
+   }
    
    
    public String toString() {
