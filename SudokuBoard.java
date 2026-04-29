@@ -20,7 +20,7 @@ public class SudokuBoard {
       }
    }
    
-     public boolean checkData() {
+   public boolean checkData() {
       Set<String> valid = new HashSet<>(Arrays.asList(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "."));
       for (int r = 0; r < board.length; r++) {
@@ -32,29 +32,32 @@ public class SudokuBoard {
       return true;
    }   
    
-   public boolean checkRows(){
-    for(int r = 0; r < board.length; r++) {
-        Set<String> set = new HashSet<String>(); 
-        for(int c = 0; c < board[0].length; c++) {
+   private boolean checkRows() {
+      for(int r = 0; r < board.length; r++) {
+         Set<String> set = new HashSet<String>(); 
+         for(int c = 0; c < board[0].length; c++) {
             if(board[r][c] != null && set.contains(board[r][c]) && !board[r][c].equals("."))
-                return false;
+               return false;
             else
-                set.add(board[r][c]);
-        }
-    }
-    return true;
-}   public boolean checkColumns(){
-     for(int r = 0; r < board.length; r++) {
-      Set <String> set = new HashSet<String> ();
-      for(int c = 0; c < board[0].length; c++) {
-         if(board[c][r] != null && set.contains(board[c][r]) && !board[c][r].equals("."))
-            return false;
-         else
-            set.add(board[c][r]);
+               set.add(board[r][c]);
+         }
       }
-     }
       return true;
    }
+   
+   private boolean checkColumns() {
+      for(int r = 0; r < board.length; r++) {
+         Set<String> set = new HashSet<String>();
+         for(int c = 0; c < board[0].length; c++) {
+            if(board[c][r] != null && set.contains(board[c][r]) && !board[c][r].equals("."))
+               return false;
+            else
+               set.add(board[c][r]);
+         }
+      }
+      return true;
+   }
+   
    private String[][] miniSquare(int spot) {
       String[][] mini = new String[3][3];
       for(int r = 0; r < 3; r++) {
@@ -65,42 +68,40 @@ public class SudokuBoard {
       return mini;
    } 
    
-   public boolean checkMiniSquare(){
+   private boolean checkMiniSquare() {
       for(int k = 1; k <= 9; k++) {
          String[][] minisq = miniSquare(k);
-         Set <String> set = new HashSet <String>();
-         for(int r = 0; r < 3; r++){
-            for(int c =0; c< 3; c++) {
-              if(minisq[r][c] != null && set.contains(minisq[r][c]) && !minisq[r][c].equals("."))
+         Set<String> set = new HashSet<String>();
+         for(int r = 0; r < 3; r++) {
+            for(int c = 0; c < 3; c++) {
+               if(minisq[r][c] != null && set.contains(minisq[r][c]) && !minisq[r][c].equals("."))
                   return false;
                else
                   set.add(minisq[r][c]);
-              
             }
-      
          }
-     }  
-      
+      }      
       return true;
    }    
    
-   public boolean isValid(){
+   public boolean isValid() {
       return checkMiniSquare() && checkColumns() && checkRows() && checkData();
    }
-   public boolean isSolved(){
+   
+   public boolean isSolved() {
       Map<String, Integer> map = new HashMap<String, Integer>();
-      for(int r = 0; r < board.length; r++){
+      for(int r = 0; r < board.length; r++) {
          for(int c = 0; c < board[0].length; c++) {
             if(!map.containsKey(board[r][c]))
                map.put(board[r][c], 1);
-             else
-               map.put(board[r][c], map.get(board[r][c])+ 1);     
-            } 
-    
-         }
-         for( String s : map.keySet()) {
-               if(map.get(s)!= 9)
-                  return false;
+            else
+               map.put(board[r][c], map.get(board[r][c]) + 1);     
+         } 
+      }
+      for(int i = 1; i <= 9; i++) {
+         String digit = "" + i;
+         if(!map.containsKey(digit) || map.get(digit) != 9)
+            return false;
       }
       return isValid();
    }
@@ -109,26 +110,27 @@ public class SudokuBoard {
    public String toString() {
       String output = "";
       for (int r = 0; r < 9; r++) {
-        if (r % 3 == 0) {
+         if (r % 3 == 0) {
             output += "  ---------------------\n";
-        }
-        for (int c = 0; c < 9; c++) {
+         }
+         for (int c = 0; c < 9; c++) {
             if (c % 3 == 0) {
-                output += "| ";
+               output += "| ";
             }
             String value = board[r][c];
             if (value.equals(".")) {
-                output += "  ";
+               output += "  ";
             } else {
-                output += value + " ";
+               output += value + " ";
             }
-        }
-        output += "|\n";
-    }
-    output += "  ---------------------\n";
-    return output;
+         }
+         output += "|\n";
+      }
+      output += "  ---------------------\n";
+      return output;
    }
 }
+
 /*
 # PROGRAM OUTPUT
 Checking empty board...passed.
